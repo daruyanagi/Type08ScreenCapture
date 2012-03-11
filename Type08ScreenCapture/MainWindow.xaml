@@ -1,0 +1,39 @@
+﻿<Window x:Class="Type08ScreenCapture.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525"
+        ShowInTaskbar="False"
+        Visibility="Hidden"
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="144" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="144" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="48" />
+        </Grid.RowDefinitions>
+
+        <Image Margin="24" Grid.Row="0" Grid.Column="0"
+               Source="/Type08ScreenCapture;component/type08.ico" />
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Content="OK" Margin="12, 8" Name="buttonOK" Width="75"
+                    Click="buttonOK_Click"  Grid.Row="2" Grid.Column="1" />
+            <Button Content="作者のWebサイトを開く" Margin="12, 8" Name="buttonGoHomePage" Width="156"
+                    Click="buttonGoHomePage_Click" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="1">
+            <TextBlock Margin="24" Text="{Binding ProductName}" FontSize="36" />
+            <TextBlock Margin="24, 0" Text="{Binding Description}" />
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Margin="24, 12" Text="{Binding Version}" />
+            <TextBlock Margin="24, 12" Text="{Binding Copyright}" />
+        </StackPanel>
+    </Grid>
+</Window>
