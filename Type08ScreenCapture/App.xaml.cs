@@ -8,6 +8,7 @@ using System.Windows;
 using System.IO;
 using System.Windows.Input;
 using WinForms = System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Type08ScreenCapture
 {
@@ -24,11 +25,29 @@ namespace Type08ScreenCapture
         public string Prefix = "スクリーンショット";
         public string Extention = ".bmp";
 
+        public bool NotificationEnabled { get; set; }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             mContextMenuStrip = new WinForms.ContextMenuStrip();
             {
                 WinForms.ToolStripItem item;
+                NotificationEnabled = true;
+
+                item = new WinForms.ToolStripMenuItem("デスクトップ通知をON/OFF");
+                item.Name = "menuItemNotificationEnabled";
+                item.Click += (_sender, _e) =>
+                {
+                    NotificationEnabled = !NotificationEnabled;
+                };
+                mContextMenuStrip.Items.Add(item);
+
+                item = new WinForms.ToolStripMenuItem("保存フォルダを開く");
+                item.Click += (_sender, _e) =>
+                {
+                    Process.Start(Location);
+                };
+                mContextMenuStrip.Items.Add(item);
 
                 item = new WinForms.ToolStripMenuItem("バージョン情報（&A）");
                 item.Click += (_sender, _e) =>
@@ -47,6 +66,12 @@ namespace Type08ScreenCapture
                 };
                 mContextMenuStrip.Items.Add(item);
             }
+
+            mContextMenuStrip.VisibleChanged += (_s, _e) =>
+            {
+                var item = mContextMenuStrip.Items.Find("menuItemNotificationEnabled", true)[0] as WinForms.ToolStripMenuItem;
+                item.Checked = NotificationEnabled;
+            };
 
             mNotifyIcon = new WinForms.NotifyIcon()
             {
@@ -67,8 +92,11 @@ namespace Type08ScreenCapture
                         var filename = GetFileNameToSave(Location, Prefix, Extention);
                         bitmap.Save(filename);
 
-                        mNotifyIcon.BalloonTipText = string.Format("{0} を保存しました。", filename);
-                        mNotifyIcon.ShowBalloonTip(1000);
+                        if (NotificationEnabled)
+                        {
+                            mNotifyIcon.BalloonTipText = string.Format("{0} を保存しました。", filename);
+                            mNotifyIcon.ShowBalloonTip(1000);
+                        }
                     }
                 }
             );
