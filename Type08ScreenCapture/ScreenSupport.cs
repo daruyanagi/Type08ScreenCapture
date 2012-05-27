@@ -16,7 +16,7 @@ namespace Type08ScreenCapture
             public int cy;
         }
 
-        static Bitmap CaptureDesktop()
+        public static Bitmap CaptureDesktop()
         {
             SIZE size;
             IntPtr hBitmap;
