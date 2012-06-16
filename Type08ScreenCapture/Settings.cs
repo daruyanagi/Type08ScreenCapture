@@ -10,7 +10,32 @@ namespace Type08ScreenCapture
 
     public class Settings
     {
-        public string Location { get; set; }
+        private string _location;
+
+        public string Location
+        {
+            get
+            {
+                return _location;
+            }
+            set
+            {
+                if (_location == value) return;
+
+                try
+                {
+                    if (!Directory.Exists(value))
+                        Directory.CreateDirectory(value);
+
+                    _location = value;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
         public string Prefix { get; set; }
         public string Extention { get; set; }
         public bool BaloonEnabled { get; set; }
@@ -19,7 +44,10 @@ namespace Type08ScreenCapture
 
         public Settings()
         {
-            Location = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            Location = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                "スクリーンショット");
+
             Prefix = "スクリーンショット";
             Extention = ".png";
             BaloonEnabled = false;

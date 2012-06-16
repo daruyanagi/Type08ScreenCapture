@@ -79,7 +79,6 @@ namespace Type08ScreenCapture
             int cursorY = 0;
             Bitmap desktopBMP;
             Bitmap cursorBMP;
-            Bitmap finalBMP;
             Graphics g;
             Rectangle r;
 

@@ -178,7 +178,7 @@ namespace Type08ScreenCapture
         public const int AW_VER_NEGATIVE = 0x00000008;
         public const int AW_CENTER = 0x00000010;
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int AnimateWindow(IntPtr hWnd, int dwTime, int dwFlags);
 
         internal void Capture()
@@ -222,13 +222,18 @@ namespace Type08ScreenCapture
                 form.WindowState = WinForms.FormWindowState.Maximized;
                 form.FormBorderStyle = WinForms.FormBorderStyle.None;
 
-                AnimateWindow(form.Handle, 300, AW_HOR_NEGATIVE | AW_BLEND);
+                int result = 0;
+                int interval = 300;
+
+                result = AnimateWindow(form.Handle, interval, AW_BLEND | AW_ACTIVATE);
+                if (result != 0) Debug.WriteLine(Marshal.GetLastWin32Error());
                 form.Show();
 
                 // http://maoudamashii.jokersounds.com/list/se5.html Thanks!
-                if (settings.SoundEnabled) new SoundPlayer("sound.wav").Play();
+                if (settings.SoundEnabled) new SoundPlayer("PrintScreen.wav").Play();
 
-                AnimateWindow(form.Handle, 300, AW_HOR_NEGATIVE | AW_BLEND | AW_HIDE);
+                result = AnimateWindow(form.Handle, interval, AW_BLEND | AW_HIDE);
+                if (result != 0) Debug.WriteLine(Marshal.GetLastWin32Error());
                 form.Hide();
             }
         }
