@@ -214,23 +214,28 @@ namespace Type08ScreenCapture
                 }
             }
 
-            using (var form = new WinForms.Form())
+            using (var form = new System.Windows.Forms.Form()
             {
-                form.BackColor = Color.Black;
-                form.ShowInTaskbar = false;
-                form.TopMost = true;
-                form.WindowState = WinForms.FormWindowState.Maximized;
-                form.FormBorderStyle = WinForms.FormBorderStyle.None;
-
+                BackColor = Color.Black,
+                ShowInTaskbar = false,
+                TopMost = true,
+                // WindowState = System.Windows.Forms.FormWindowState.Maximized, <- 諸悪の根源！
+                Left = 0,
+                Top = 0,
+                Width = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width,
+                Height = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height,
+                FormBorderStyle = System.Windows.Forms.FormBorderStyle.None,
+            })
+            {
                 int result = 0;
-                int interval = 300;
+                const int interval = 200;
 
                 result = AnimateWindow(form.Handle, interval, AW_BLEND | AW_ACTIVATE);
                 if (result != 0) Debug.WriteLine(Marshal.GetLastWin32Error());
                 form.Show();
 
-                // http://maoudamashii.jokersounds.com/list/se5.html Thanks!
-                if (settings.SoundEnabled) new SoundPlayer("PrintScreen.wav").Play();
+                if (settings.SoundEnabled && File.Exists("PrintScreen.wav"))
+                    new SoundPlayer("PrintScreen.wav").Play();
 
                 result = AnimateWindow(form.Handle, interval, AW_BLEND | AW_HIDE);
                 if (result != 0) Debug.WriteLine(Marshal.GetLastWin32Error());
