@@ -131,6 +131,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="README.md" />
     <None Include="Type08ScreenCapture_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -187,10 +187,10 @@ namespace Type08ScreenCapture
                 ? ScreenSupport.CaptureDesktopWithCursor()
                 : ScreenSupport.CaptureDesktop())
             {
-                var filename = GetFileNameToSave(
-                    settings.Location, settings.Prefix, settings.Extention);
+                var extension = settings.Extention.ToLower();
+                var filename = GetFileNameToSave(settings.Location, settings.Prefix, extension);
 
-                switch (settings.Extention.ToLower())
+                switch (extension)
                 {
                     case ".png":
                         bitmap.Save(filename, ImageFormat.Png);
@@ -202,9 +202,10 @@ namespace Type08ScreenCapture
                         bitmap.Save(filename, ImageFormat.Gif);
                         break;
                     case ".bmp":
-                    default:
                         bitmap.Save(filename, ImageFormat.Bmp);
                         break;
+                    default:
+                        throw new Exception(string.Format("{0} is not supported.", extension));
                 }
 
                 if (settings.BaloonEnabled)
